@@ -11,42 +11,61 @@ def calculate_completeness_score(row: pd.Series) -> int:
     """
     Calculate metadata completeness score for a record.
     
-    Canvas specification:
-    - Abstract present: +3
-    - Keywords present: +2
-    - References present: +2
-    - Affiliations/countries present: +1
-    - Cited by present: +1
+    DATA_DICTIONARY specification (0-100 scale):
+    - DOI present: 20
+    - Title present: 15
+    - Abstract present: 15
+    - Authors present: 15
+    - Year present: 10
+    - Keywords present: 10
+    - References present: 10
+    - Cited by present: 5
+    Maximum score: 100
     
     Args:
         row: DataFrame row with canonical schema fields
         
     Returns:
-        Completeness score (integer, no maximum)
+        Completeness score (integer, 0-100)
     """
     score = 0
     
-    # Abstract present (+3)
+    # DOI present (+20)
+    if pd.notna(row.get('doi_clean')):
+        score += 20
+    
+    # Title present (+15)
+    if pd.notna(row.get('title_raw')) and str(row.get('title_raw', '')).strip():
+        score += 15
+    
+    # Abstract present (+15)
     if pd.notna(row.get('abstract_raw')) and str(row.get('abstract_raw', '')).strip():
-        score += 3
+        score += 15
     
-    # Keywords present (+2)
+    # Authors present (+15)
+    if pd.notna(row.get('authors_raw')) and str(row.get('authors_raw', '')).strip():
+        score += 15
+    
+    # Year present (+10)
+    if pd.notna(row.get('year_clean')):
+        score += 10
+    
+    # Keywords present (+10)
     if pd.notna(row.get('keywords_raw')) and str(row.get('keywords_raw', '')).strip():
-        score += 2
+        score += 10
     
-    # References present (+2)
+    # References present (+10)
     if pd.notna(row.get('references_raw')) and str(row.get('references_raw', '')).strip():
-        score += 2
+        score += 10
     
-    # Affiliations/countries present (+1)
-    has_affiliations = pd.notna(row.get('affiliations_raw')) and str(row.get('affiliations_raw', '')).strip()
-    has_countries = pd.notna(row.get('countries_raw')) and str(row.get('countries_raw', '')).strip()
-    if has_affiliations or has_countries:
-        score += 1
-    
-    # Cited by present (+1)
-    if pd.notna(row.get('cited_by_raw')) and row.get('cited_by_raw', 0) > 0:
-        score += 1
+    # Cited by present (+5)
+    if pd.notna(row.get('cited_by_raw')):
+        try:
+            cited_by_val = int(row.get('cited_by_raw', 0))
+            if cited_by_val > 0:
+                score += 5
+        except (ValueError, TypeError):
+            pass
     
     return score
 

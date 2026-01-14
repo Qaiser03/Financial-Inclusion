@@ -1,8 +1,15 @@
-# Raw data (never commit)
-data/raw/*.csv
-data/raw/*.txt
-data/raw/*.xlsx
-data/raw/*.xls
+# Raw data (never commit) - never track any raw exports
+data/raw/
+*.xlsx
+*.xls
+scopus*.csv
+scopus*.txt
+wos*.csv
+wos*.txt
+WoS*.csv
+WoS*.txt
+WoS*.xlsx
+WoS*.xls
 
 # Processed data (large files)
 data/processed/*.csv

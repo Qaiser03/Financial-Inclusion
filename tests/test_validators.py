@@ -6,7 +6,7 @@ from src.data.validators import calculate_completeness_score, validate_schema
 
 
 def test_calculate_completeness_score():
-    """Test completeness score calculation (Canvas spec: abstract=3, keywords=2, references=2, affiliations=1, cited_by=1)"""
+    """Test completeness score calculation (DATA_DICTIONARY spec: DOI=20, title=15, abstract=15, authors=15, year=10, keywords=10, references=10, cited_by=5)"""
     # Complete record
     row_complete = pd.Series({
         'doi_clean': '10.1234/test',
@@ -22,10 +22,10 @@ def test_calculate_completeness_score():
     })
     
     score = calculate_completeness_score(row_complete)
-    # Canvas spec: abstract(3) + keywords(2) + references(2) + affiliations(1) + cited_by(1) = 9
-    assert score == 9
+    # DATA_DICTIONARY spec: DOI(20) + title(15) + abstract(15) + authors(15) + year(10) + keywords(10) + references(10) + cited_by(5) = 100
+    assert score == 100
     
-    # Incomplete record
+    # Incomplete record (only title)
     row_incomplete = pd.Series({
         'doi_clean': None,
         'title_raw': 'Test Title',
@@ -38,7 +38,7 @@ def test_calculate_completeness_score():
     })
     
     score = calculate_completeness_score(row_incomplete)
-    assert score == 0  # Canvas spec doesn't count title, only abstract/keywords/references/affiliations/cited_by
+    assert score == 15  # DATA_DICTIONARY spec: only title(15)
 
 
 def test_validate_schema():

@@ -106,10 +106,11 @@ def main():
     
     # Step 5: Generate deduplication audits
     logger.info("Step 5: Generating deduplication audits")
+    # Note: Pass cleaned versions for dedup_mapping, original versions for count stats
     # Calculate detailed dedup stats (simplified - in full implementation would track during dedup)
     within_source_doi_removed = {
-        'scopus': len(scopus_df) - len(scopus_cleaned[scopus_cleaned['doi_clean'].notna()]),
-        'wos': len(wos_df) - len(wos_cleaned[wos_cleaned['doi_clean'].notna()])
+        'scopus': len(scopus_df) - len(scopus_cleaned),
+        'wos': len(wos_df) - len(wos_cleaned)
     }
     within_source_title_year_removed = {
         'scopus': 0,  # Would need to track during dedup

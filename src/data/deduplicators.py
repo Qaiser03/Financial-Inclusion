@@ -36,24 +36,18 @@ def deduplicate_within_db(df: pd.DataFrame, source_db: str) -> pd.DataFrame:
     df_without_doi = df[~has_doi].copy()
     
     if len(df_with_doi) > 0:
-        # Group by doi_clean
-        grouped = df_with_doi.groupby('doi_clean', as_index=False)
+        # Group by doi_clean and select best record from each group
+        # Sort first, then take first from each group
+        df_with_doi['has_references'] = df_with_doi['references_raw'].notna() & (
+            df_with_doi['references_raw'].astype(str).str.strip() != ''
+        )
         
-        def select_best_record(group):
-            # Sort by: completeness score (desc), has references (desc), raw_record_id (asc)
-            group = group.copy()
-            group['has_references'] = group['references_raw'].notna() & (
-                group['references_raw'].astype(str).str.strip() != ''
-            )
-            
-            group = group.sort_values(
-                by=['metadata_completeness_score', 'has_references', 'raw_record_id'],
-                ascending=[False, False, True]
-            )
-            
-            return group.iloc[0]
+        df_with_doi_sorted = df_with_doi.sort_values(
+            by=['doi_clean', 'metadata_completeness_score', 'has_references', 'raw_record_id'],
+            ascending=[True, False, False, True]
+        )
         
-        df_with_doi_dedup = grouped.apply(select_best_record).reset_index(drop=True)
+        df_with_doi_dedup = df_with_doi_sorted.drop_duplicates(subset=['doi_clean'], keep='first').drop(columns=['has_references'])
     else:
         df_with_doi_dedup = pd.DataFrame()
     
@@ -76,25 +70,19 @@ def deduplicate_within_db(df: pd.DataFrame, source_db: str) -> pd.DataFrame:
                 df_with_secondary['year_clean'].astype(str)
             )
             
-            # Group by secondary key
-            grouped = df_with_secondary.groupby('secondary_key', as_index=False)
+            # Sort and deduplicate by secondary key
+            df_with_secondary['has_references'] = df_with_secondary['references_raw'].notna() & (
+                df_with_secondary['references_raw'].astype(str).str.strip() != ''
+            )
             
-            def select_best_record_secondary(group):
-                # Sort by: completeness score (desc), has references (desc), raw_record_id (asc)
-                group = group.copy()
-                group['has_references'] = group['references_raw'].notna() & (
-                    group['references_raw'].astype(str).str.strip() != ''
-                )
-                
-                group = group.sort_values(
-                    by=['metadata_completeness_score', 'has_references', 'raw_record_id'],
-                    ascending=[False, False, True]
-                )
-                
-                return group.iloc[0]
+            df_with_secondary_sorted = df_with_secondary.sort_values(
+                by=['secondary_key', 'metadata_completeness_score', 'has_references', 'raw_record_id'],
+                ascending=[True, False, False, True]
+            )
             
-            df_with_secondary_dedup = grouped.apply(select_best_record_secondary).reset_index(drop=True)
-            df_with_secondary_dedup = df_with_secondary_dedup.drop(columns=['secondary_key'])
+            df_with_secondary_dedup = df_with_secondary_sorted.drop_duplicates(subset=['secondary_key'], keep='first')
+            # Drop temporary columns
+            df_with_secondary_dedup = df_with_secondary_dedup.drop(columns=['secondary_key', 'has_references'], errors='ignore')
         else:
             df_with_secondary_dedup = pd.DataFrame()
         
@@ -151,35 +139,32 @@ def deduplicate_cross_db(
     collisions_primary = []
     
     if len(df_with_doi) > 0:
-        # Group by doi_clean
-        grouped = df_with_doi.groupby('doi_clean', as_index=False)
+        # Group by doi_clean to detect collisions, then deduplicate
+        doi_counts = df_with_doi.groupby('doi_clean').size()
+        collision_dois = doi_counts[doi_counts > 1].index
         
-        def select_best_record_primary(group):
-            if len(group) > 1:
-                # Multiple records with same DOI - potential collision
-                collision_info = {
-                    'doi_clean': group.iloc[0]['doi_clean'],
-                    'n_records': len(group),
-                    'sources': group['source_db'].tolist(),
-                    'record_ids': group['raw_record_id'].tolist(),
-                }
-                collisions_primary.append(collision_info)
-            
-            # Sort by: completeness score (desc), has references (desc), preferred DB, raw_record_id (asc)
-            group = group.copy()
-            group['has_references'] = group['references_raw'].notna() & (
-                group['references_raw'].astype(str).str.strip() != ''
-            )
-            group['is_preferred'] = (group['source_db'] == preferred_db)
-            
-            group = group.sort_values(
-                by=['metadata_completeness_score', 'has_references', 'is_preferred', 'raw_record_id'],
-                ascending=[False, False, False, True]
-            )
-            
-            return group.iloc[0]
+        for doi_val in collision_dois:
+            group = df_with_doi[df_with_doi['doi_clean'] == doi_val]
+            collision_info = {
+                'doi_clean': doi_val,
+                'n_records': len(group),
+                'sources': group['source_db'].tolist(),
+                'record_ids': group['raw_record_id'].tolist(),
+            }
+            collisions_primary.append(collision_info)
         
-        df_with_doi_dedup = grouped.apply(select_best_record_primary).reset_index(drop=True)
+        # Sort and deduplicate
+        df_with_doi['has_references'] = df_with_doi['references_raw'].notna() & (
+            df_with_doi['references_raw'].astype(str).str.strip() != ''
+        )
+        df_with_doi['is_preferred'] = (df_with_doi['source_db'] == preferred_db)
+        
+        df_with_doi_sorted = df_with_doi.sort_values(
+            by=['doi_clean', 'metadata_completeness_score', 'has_references', 'is_preferred', 'raw_record_id'],
+            ascending=[True, False, False, False, True]
+        )
+        
+        df_with_doi_dedup = df_with_doi_sorted.drop_duplicates(subset=['doi_clean'], keep='first').drop(columns=['has_references', 'is_preferred'])
     else:
         df_with_doi_dedup = pd.DataFrame()
     
@@ -205,38 +190,36 @@ def deduplicate_cross_db(
                 df_with_secondary['year_clean'].astype(str)
             )
             
-            # Group by secondary key
-            grouped = df_with_secondary.groupby('secondary_key', as_index=False)
+            # Group by secondary key to detect collisions
+            sec_key_counts = df_with_secondary.groupby('secondary_key').size()
+            collision_keys = sec_key_counts[sec_key_counts > 1].index
             
-            def select_best_record_secondary(group):
-                if len(group) > 1:
-                    # Multiple records with same secondary key - potential collision
-                    collision_info = {
-                        'title_norm': group.iloc[0]['title_norm'],
-                        'year_clean': group.iloc[0]['year_clean'],
-                        'n_records': len(group),
-                        'sources': group['source_db'].tolist(),
-                        'record_ids': group['raw_record_id'].tolist(),
-                        'titles': group['title_raw'].tolist(),
-                    }
-                    collisions_secondary.append(collision_info)
-                
-                # Sort by: completeness score (desc), has references (desc), preferred DB, raw_record_id (asc)
-                group = group.copy()
-                group['has_references'] = group['references_raw'].notna() & (
-                    group['references_raw'].astype(str).str.strip() != ''
-                )
-                group['is_preferred'] = (group['source_db'] == preferred_db)
-                
-                group = group.sort_values(
-                    by=['metadata_completeness_score', 'has_references', 'is_preferred', 'raw_record_id'],
-                    ascending=[False, False, False, True]
-                )
-                
-                return group.iloc[0]
+            for key_val in collision_keys:
+                group = df_with_secondary[df_with_secondary['secondary_key'] == key_val]
+                collision_info = {
+                    'title_norm': group['title_norm'].iloc[0],
+                    'year_clean': group['year_clean'].iloc[0],
+                    'n_records': len(group),
+                    'sources': group['source_db'].tolist(),
+                    'record_ids': group['raw_record_id'].tolist(),
+                    'titles': group['title_raw'].tolist(),
+                }
+                collisions_secondary.append(collision_info)
             
-            df_with_secondary_dedup = grouped.apply(select_best_record_secondary).reset_index(drop=True)
-            df_with_secondary_dedup = df_with_secondary_dedup.drop(columns=['secondary_key'])
+            # Sort and deduplicate
+            df_with_secondary['has_references'] = df_with_secondary['references_raw'].notna() & (
+                df_with_secondary['references_raw'].astype(str).str.strip() != ''
+            )
+            df_with_secondary['is_preferred'] = (df_with_secondary['source_db'] == preferred_db)
+            
+            df_with_secondary_sorted = df_with_secondary.sort_values(
+                by=['secondary_key', 'metadata_completeness_score', 'has_references', 'is_preferred', 'raw_record_id'],
+                ascending=[True, False, False, False, True]
+            )
+            
+            df_with_secondary_dedup = df_with_secondary_sorted.drop_duplicates(subset=['secondary_key'], keep='first')
+            # Drop temporary columns
+            df_with_secondary_dedup = df_with_secondary_dedup.drop(columns=['secondary_key', 'has_references', 'is_preferred'], errors='ignore')
         else:
             df_with_secondary_dedup = pd.DataFrame()
         

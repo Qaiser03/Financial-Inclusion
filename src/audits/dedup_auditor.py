@@ -83,9 +83,11 @@ def generate_dedup_mapping(
     
     Canvas spec: columns: raw_record_id, source_db, doc_id_canonical, dedup_reason ∈ {doi, title_year, kept}
     
+    Note: scopus_df and wos_df should be the CLEANED versions with doi_clean, title_norm, year_clean
+    
     Args:
-        scopus_df: Original Scopus DataFrame (before dedup)
-        wos_df: Original WoS DataFrame (before dedup)
+        scopus_df: Cleaned Scopus DataFrame (after cleaning, before dedup)
+        wos_df: Cleaned WoS DataFrame (after cleaning, before dedup)
         canonical_df: Canonical DataFrame with canonical_id
         
     Returns:
@@ -110,10 +112,23 @@ def generate_dedup_mapping(
         })
     
     # Add records that were removed
-    all_original = pd.concat([
-        scopus_df[['source_db', 'raw_record_id', 'doi_clean', 'title_norm', 'year_clean']],
-        wos_df[['source_db', 'raw_record_id', 'doi_clean', 'title_norm', 'year_clean']]
-    ], ignore_index=True)
+    # Check if cleaned columns exist, otherwise skip detailed dedup reason
+    has_cleaned_cols = 'doi_clean' in scopus_df.columns and 'doi_clean' in wos_df.columns
+    
+    if has_cleaned_cols:
+        all_original = pd.concat([
+            scopus_df[['source_db', 'raw_record_id', 'doi_clean', 'title_norm', 'year_clean']],
+            wos_df[['source_db', 'raw_record_id', 'doi_clean', 'title_norm', 'year_clean']]
+        ], ignore_index=True)
+    else:
+        # If cleaned columns don't exist, use basic version
+        all_original = pd.concat([
+            scopus_df[['source_db', 'raw_record_id']],
+            wos_df[['source_db', 'raw_record_id']]
+        ], ignore_index=True)
+        all_original['doi_clean'] = None
+        all_original['title_norm'] = None
+        all_original['year_clean'] = None
     
     for _, row in all_original.iterrows():
         record_key = (row['source_db'], row['raw_record_id'])
