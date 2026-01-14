@@ -72,3 +72,4 @@ vosviewer/exports/*.txt
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !vosviewer/exports/.gitkeep
+Financial Inclusion/
