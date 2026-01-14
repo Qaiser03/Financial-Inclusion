@@ -1,0 +1,67 @@
+# Raw data (never commit)
+data/raw/*.csv
+data/raw/*.txt
+data/raw/*.xlsx
+data/raw/*.xls
+
+# Processed data (large files)
+data/processed/*.csv
+data/processed/*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs (optional - uncomment if you don't want to track outputs)
+# outputs/figures/*
+# outputs/tables/*
+# outputs/audits/*
+
+# VOSviewer exports (large files)
+vosviewer/exports/*.net
+vosviewer/exports/*.map
+vosviewer/exports/*.txt
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!vosviewer/exports/.gitkeep

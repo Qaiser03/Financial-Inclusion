@@ -1,0 +1,161 @@
+# Financial Inclusion Tools (FIT) Dictionary
+# Multi-label tagging dictionary for categorizing research papers
+# Each FIT category contains terms that, when found in title/abstract/keywords,
+# indicate that the paper relates to that FIT category
+
+FIT1_Mobile_Money:
+  description: "Mobile money, mobile payments, mobile wallets, e-wallets, digital wallets"
+  terms:
+    - "mobile money"
+    - "mobile payment"
+    - "mobile payments"
+    - "mobile wallet"
+    - "mobile wallets"
+    - "e-wallet"
+    - "e-wallets"
+    - "ewallet"
+    - "ewallets"
+    - "digital wallet"
+    - "digital wallets"
+    - "m-pesa"
+    - "mpesa"
+    - "mobile financial service"
+    - "mobile financial services"
+
+FIT2_Nonbank_Distribution:
+  description: "Nonbank financial distribution channels: agents, fintech distribution, branchless banking, correspondent banking"
+  terms:
+    - "agent banking"
+    - "banking agent"
+    - "banking agents"
+    - "agent network"
+    - "branchless banking"
+    - "correspondent banking"
+    - "nonbank"
+    - "non-bank"
+    - "nonbanking"
+    - "non-banking"
+    - "fintech distribution"
+    - "alternative distribution"
+    - "retail agent"
+    - "retail agents"
+
+FIT3_Behavioral_Credit_Risk:
+  description: "Behavioral credit risk assessment: alternative data, psychometrics, behavioral scoring, digital footprints"
+  terms:
+    - "credit scoring"
+    - "alternative data"
+    - "psychometric"
+    - "psychometrics"
+    - "behavioral scoring"
+    - "behavioral credit"
+    - "digital footprint"
+    - "digital footprints"
+    - "non-traditional credit"
+    - "nontraditional credit"
+    - "alternative credit"
+    - "behavioral risk"
+    - "psychometric scoring"
+
+FIT4_Workers_Remittances:
+  description: "Workers' remittances, cross-border payments, international transfers"
+  terms:
+    - "remittance"
+    - "remittances"
+    - "cross-border payment"
+    - "cross-border payments"
+    - "crossborder payment"
+    - "international transfer"
+    - "international transfers"
+    - "money transfer"
+    - "money transfers"
+    - "worker remittance"
+    - "worker remittances"
+    - "migrant remittance"
+    - "migrant remittances"
+
+FIT5_Adapted_Regulation:
+  description: "Adapted financial regulation: tiered KYC, simplified KYC, eKYC, regulatory sandboxes, AML/CFT alignment, consumer protection"
+  terms:
+    - "tiered kyc"
+    - "simplified kyc"
+    - "ekyc"
+    - "e-kyc"
+    - "electronic kyc"
+    - "proportionate regulation"
+    - "regulatory sandbox"
+    - "regulatory sandboxes"
+    - "aml/cft"
+    - "aml cft"
+    - "anti-money laundering"
+    - "consumer protection"
+    - "financial regulation"
+    - "prudential regulation"
+    - "risk-based regulation"
+
+FIT6_Financial_Education:
+  description: "Financial education, financial literacy"
+  terms:
+    - "financial literacy"
+    - "financial education"
+    - "financial capability"
+    - "financial capabilities"
+    - "financial knowledge"
+    - "financial awareness"
+    - "financial training"
+    - "financial skills"
+
+FIT7_Microfinance_Models:
+  description: "Microfinance business models: microcredit, group lending"
+  terms:
+    - "microfinance"
+    - "microcredit"
+    - "micro-credit"
+    - "group lending"
+    - "group loan"
+    - "group loans"
+    - "microfinance institution"
+    - "microfinance institutions"
+    - "mfi"
+    - "mfis"
+    - "rotating savings"
+    - "rosca"
+    - "roscas"
+
+FIT8_Blockchain_DLT:
+  description: "Blockchain, distributed ledger technology (DLT), stablecoins, CBDC (only if relevant in abstracts)"
+  terms:
+    - "blockchain"
+    - "distributed ledger"
+    - "distributed ledger technology"
+    - "dlt"
+    - "stablecoin"
+    - "stablecoins"
+    - "cbdc"
+    - "central bank digital currency"
+    - "central bank digital currencies"
+    - "cryptocurrency"
+    - "cryptocurrencies"
+    - "smart contract"
+    - "smart contracts"
+  note: "Only tag if blockchain/DLT is discussed in context of financial inclusion (not general blockchain research)"
+
+# Tagging rules
+tagging_rules:
+  # Search in these fields
+  search_fields:
+    - "title_raw"
+    - "abstract_raw"
+    - "keywords_raw"
+  
+  # Case sensitivity
+  case_sensitive: false
+  
+  # Whole word matching (vs substring)
+  whole_words_only: true
+  
+  # Multi-label: a paper can have multiple FIT categories
+  multi_label: true
+  
+  # Minimum number of term matches to assign a FIT category
+  min_matches: 1

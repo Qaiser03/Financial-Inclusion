@@ -1,0 +1,114 @@
+# Pipeline Configuration Parameters
+# All paths are relative to repository root
+
+# Random seeds for reproducibility
+seeds:
+  figure_generation: 42
+  sampling: 42
+  clustering: 42
+  network_layout: 42
+
+# Database preferences
+deduplication:
+  # When metadata completeness scores are equal and both records have references,
+  # prefer this database for tie-breaking
+  preferred_db: "scopus"  # Options: "scopus" or "wos"
+  
+  # Minimum metadata completeness score to keep a record (0-100)
+  min_completeness_score: 0
+
+# File paths
+paths:
+  raw_data:
+    scopus: "data/raw/scopus_fi.csv"
+    wos: "data/raw/wos_fi.txt"
+  
+  processed_data:
+    scopus_cleaned: "data/processed/scopus_cleaned.csv"
+    wos_cleaned: "data/processed/wos_cleaned.csv"
+    canonical: "data/processed/canonical_fi.csv"
+  
+  fit_dictionary: "docs/FIT_DICTIONARY.yml"
+  thesaurus: "vosviewer/thesaurus_fi.txt"
+  
+  outputs:
+    audits: "outputs/audits"
+    figures: "outputs/figures"
+    tables: "outputs/tables"
+  
+  vosviewer:
+    exports: "vosviewer/exports"
+    cocitation_network: "vosviewer/exports/cocitation_network"
+
+# Figure generation settings
+figures:
+  # Output formats: ["png", "pdf"] or ["png"] or ["pdf"]
+  formats: ["png", "pdf"]
+  
+  # DPI for PNG exports
+  dpi: 300
+  
+  # Figure sizes (width, height in inches)
+  sizes:
+    standard: [10, 6]
+    wide: [12, 6]
+    square: [8, 8]
+    tall: [8, 10]
+  
+  # Wordcloud settings
+  wordcloud:
+    max_words: 100
+    width: 800
+    height: 400
+    background_color: "white"
+  
+  # Network visualization settings
+  network:
+    node_size_range: [50, 500]
+    edge_width_range: [0.5, 3.0]
+    layout_algorithm: "spring"  # Options: "spring", "kamada_kawai", "circular"
+
+# Table generation settings
+tables:
+  # Number of decimal places for numeric columns
+  decimal_places: 2
+  
+  # CSV export settings
+  csv:
+    index: false
+    encoding: "utf-8-sig"  # UTF-8 with BOM for Excel compatibility
+
+# FIT tagging settings
+fit_tagging:
+  # Minimum term match confidence (if applicable)
+  min_confidence: 0.0
+  
+  # Case sensitivity for term matching
+  case_sensitive: false
+  
+  # Match whole words only (vs. substring matching)
+  whole_words_only: true
+
+# Data processing settings
+processing:
+  # Maximum number of records to process (for testing; set to null for all)
+  max_records: null
+  
+  # Chunk size for large file processing
+  chunk_size: 10000
+  
+  # Enable verbose logging
+  verbose: true
+
+# VOSviewer integration
+vosviewer:
+  # VOSviewer version used (document for reproducibility)
+  version: "latest"
+  
+  # Network construction parameters (document manual settings)
+  network_params:
+    # These are documented but set manually in VOSviewer
+    # Minimum number of citations for inclusion
+    min_citations: 1
+    # Normalization method
+    normalization: "association_strength"

@@ -1,0 +1,78 @@
+# VOSviewer Thesaurus File for Financial Inclusion
+# Format: TERM1 = TERM2
+# This file normalizes keyword variations to ensure consistent network analysis
+
+# Mobile Money Variations
+mobile money = mobile payments
+mobile payment = mobile payments
+m-pesa = mobile money
+mpesa = mobile money
+e-wallet = digital wallet
+e-wallets = digital wallet
+ewallet = digital wallet
+ewallets = digital wallet
+
+# Financial Inclusion Variations
+financial inclusion = financial inclusion
+digital financial inclusion = financial inclusion
+inclusive finance = financial inclusion
+financial access = financial inclusion
+access to finance = financial inclusion
+
+# Banking Agent Variations
+agent banking = branchless banking
+banking agent = branchless banking
+banking agents = branchless banking
+correspondent banking = branchless banking
+nonbank = nonbank financial services
+non-bank = nonbank financial services
+
+# Credit Scoring Variations
+credit scoring = alternative credit scoring
+alternative data = alternative credit scoring
+psychometric = psychometric scoring
+psychometrics = psychometric scoring
+behavioral scoring = alternative credit scoring
+digital footprint = alternative credit scoring
+
+# Remittances Variations
+remittance = remittances
+cross-border payment = remittances
+cross-border payments = remittances
+international transfer = remittances
+international transfers = remittances
+money transfer = remittances
+
+# KYC Variations
+tiered kyc = simplified kyc
+ekyc = simplified kyc
+e-kyc = simplified kyc
+electronic kyc = simplified kyc
+
+# Financial Education Variations
+financial literacy = financial education
+financial capability = financial education
+financial capabilities = financial education
+
+# Microfinance Variations
+microcredit = microfinance
+micro-credit = microfinance
+group lending = microfinance
+mfi = microfinance institution
+mfis = microfinance institution
+
+# Blockchain Variations
+distributed ledger = blockchain
+distributed ledger technology = blockchain
+dlt = blockchain
+stablecoin = blockchain
+stablecoins = blockchain
+cbdc = central bank digital currency
+central bank digital currency = blockchain
+
+# Financial Inclusion Indicators
+financial inclusion index = financial inclusion indicators
+index of financial inclusion = financial inclusion indicators
+findex = financial inclusion indicators
+global findex = financial inclusion indicators
+financial access indicator = financial inclusion indicators
