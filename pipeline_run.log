@@ -1,0 +1,73 @@
+2026-01-14 23:12:33,429 - __main__ - INFO - Loading configuration
+2026-01-14 23:12:33,450 - __main__ - INFO - Step 1: Loading raw data
+2026-01-14 23:12:33,451 - src.data.loaders - INFO - Found Scopus file: data\raw\scopus.xlsx
+2026-01-14 23:12:33,451 - src.data.loaders - INFO - Loading Scopus data from data\raw\scopus.xlsx
+2026-01-14 23:12:41,302 - src.data.loaders - INFO - Loaded 6403 records from Scopus
+2026-01-14 23:12:41,306 - src.data.loaders - INFO - Found WoS file: data\raw\WoS.xlsx
+2026-01-14 23:12:41,306 - src.data.loaders - INFO - Loading Web of Science data from data\raw\WoS.xlsx
+2026-01-14 23:12:48,661 - src.data.loaders - INFO - Loaded 3540 records from Web of Science
+2026-01-14 23:12:48,664 - __main__ - INFO - Step 2: Cleaning data
+2026-01-14 23:12:48,664 - src.data.cleaners - INFO - Applying cleaning rules to dataframe
+2026-01-14 23:12:49,129 - src.data.cleaners - INFO - Cleaning complete. DOI coverage: 92.4%
+2026-01-14 23:12:49,129 - src.data.cleaners - INFO - Applying cleaning rules to dataframe
+2026-01-14 23:12:49,393 - src.data.cleaners - INFO - Cleaning complete. DOI coverage: 91.9%
+2026-01-14 23:12:49,394 - __main__ - INFO - Step 3: Calculating completeness scores
+2026-01-14 23:12:49,394 - src.data.validators - INFO - Calculating metadata completeness scores
+2026-01-14 23:12:49,971 - src.data.validators - INFO - Average completeness score: 95.8/100
+2026-01-14 23:12:49,973 - src.data.validators - INFO - Calculating metadata completeness scores
+2026-01-14 23:12:50,277 - src.data.validators - INFO - Average completeness score: 86.9/100
+2026-01-14 23:12:50,278 - __main__ - INFO - Step 4: Deduplicating
+2026-01-14 23:12:50,278 - src.data.deduplicators - INFO - Starting full deduplication pipeline
+2026-01-14 23:12:50,278 - src.data.deduplicators - INFO - Deduplicating scopus records (n=6403)
+2026-01-14 23:12:50,362 - src.data.deduplicators - INFO - Removed 25 duplicate records from scopus (kept 6378)
+2026-01-14 23:12:50,368 - src.data.deduplicators - INFO - Deduplicating wos records (n=3540)
+2026-01-14 23:12:50,424 - src.data.deduplicators - INFO - Removed 0 duplicate records from wos (kept 3540)
+2026-01-14 23:12:50,426 - src.data.deduplicators - INFO - Merging and deduplicating across databases
+2026-01-14 23:12:50,433 - src.data.deduplicators - INFO - Total records after merge: 9918
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\Financial Inclusion\src\run_pipeline.py", line 316, in <module>
+    main()
+    ~~~~^^
+  File "D:\Financial Inclusion\src\run_pipeline.py", line 101, in main
+    canonical_df, collisions_df = deduplicate_full_pipeline(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        scopus_cleaned,
+        ^^^^^^^^^^^^^^^
+        wos_cleaned,
+        ^^^^^^^^^^^^
+        preferred_db=preferred_db
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Financial Inclusion\src\data\deduplicators.py", line 275, in deduplicate_full_pipeline
+    canonical_df, collisions_df = deduplicate_cross_db(
+                                  ~~~~~~~~~~~~~~~~~~~~^
+        scopus_dedup,
+        ^^^^^^^^^^^^^
+        wos_dedup,
+        ^^^^^^^^^^
+        preferred_db=preferred_db
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Financial Inclusion\src\data\deduplicators.py", line 219, in deduplicate_cross_db
+    df_with_secondary_dedup = df_with_secondary_dedup.drop(columns=['secondary_key'])
+  File "C:\Users\Alpha Tech\miniconda3\Lib\site-packages\pandas\core\frame.py", line 5603, in drop
+    return super().drop(
+           ~~~~~~~~~~~~^
+        labels=labels,
+        ^^^^^^^^^^^^^^
+    ...<5 lines>...
+        errors=errors,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Alpha Tech\miniconda3\Lib\site-packages\pandas\core\generic.py", line 4810, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+  File "C:\Users\Alpha Tech\miniconda3\Lib\site-packages\pandas\core\generic.py", line 4852, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+  File "C:\Users\Alpha Tech\miniconda3\Lib\site-packages\pandas\core\indexes\base.py", line 7136, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['secondary_key'] not found in axis"

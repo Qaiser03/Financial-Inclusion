@@ -1,0 +1,36 @@
+{
+  "input_file_paths": {
+    "scopus": "data\\raw\\scopus.xlsx",
+    "wos": "data\\raw\\WoS.xlsx"
+  },
+  "input": {
+    "scopus": 6403,
+    "wos": 3540,
+    "total": 9943
+  },
+  "after_within_db_dedup": {
+    "scopus": 6403,
+    "wos": 3540,
+    "total": 9943
+  },
+  "output": {
+    "canonical_records": 7153
+  },
+  "deduplication": {
+    "within_source": {
+      "scopus_doi_removed": 0,
+      "scopus_title_year_removed": 0,
+      "wos_doi_removed": 0,
+      "wos_title_year_removed": 0
+    },
+    "cross_source": {
+      "doi_removed": 0,
+      "title_year_removed": 0
+    },
+    "total_removed": 2790,
+    "deduplication_rate": 28.059941667504777
+  },
+  "collisions": {
+    "secondary_key_collisions": 56
+  }
+}
