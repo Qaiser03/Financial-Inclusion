@@ -24,6 +24,7 @@ from src.figures.wordclouds import plot_wordclouds_panel
 from src.figures.mca_map import plot_mca_map
 from src.figures.fit_trends import plot_fit_trends
 from src.figures.fit_cooccurrence import plot_fit_cooccurrence_heatmap
+from src.figures.registry import generate_figure, validate_figure_request
 
 # Table modules
 from src.tables.fit_cooccurrence import calculate_fit_cooccurrence, save_fit_cooccurrence_table
@@ -155,49 +156,38 @@ def main():
         seed = get_seed(config, 'figure_generation')
         fig_config = config['figures']
         
-        figure_list = args.make_figures if 'all' not in args.make_figures else [
-            'fig02', 'fig03', 'fig04', 'fig06', 'fig07', 'fig08', 'fig10'
-        ]
+        figure_list = validate_figure_request(args.make_figures)
         
         for fig_name in figure_list:
             if fig_name == 'fig02':
-                plot_annual_production(
-                    canonical_df,
-                    str(output_figures / 'fig02_annual_production.png'),
-                    figsize=fig_config['sizes']['standard'],
-                    dpi=fig_config['dpi']
-                )
-                plot_annual_production(
-                    canonical_df,
-                    str(output_figures / 'fig02_annual_production.pdf'),
+                generate_figure(
+                    plot_func=plot_annual_production,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig02_annual_production',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['standard'],
                     dpi=fig_config['dpi']
                 )
             
             elif fig_name == 'fig03':
-                plot_country_productivity(
-                    canonical_df,
-                    str(output_figures / 'fig03_country_productivity.png'),
-                    figsize=fig_config['sizes']['standard'],
-                    dpi=fig_config['dpi']
-                )
-                plot_country_productivity(
-                    canonical_df,
-                    str(output_figures / 'fig03_country_productivity.pdf'),
+                generate_figure(
+                    plot_func=plot_country_productivity,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig03_country_productivity',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['standard'],
                     dpi=fig_config['dpi']
                 )
             
             elif fig_name == 'fig04':
-                plot_author_production_over_time(
-                    canonical_df,
-                    str(output_figures / 'fig04_author_production_over_time.png'),
-                    figsize=fig_config['sizes']['wide'],
-                    dpi=fig_config['dpi']
-                )
-                plot_author_production_over_time(
-                    canonical_df,
-                    str(output_figures / 'fig04_author_production_over_time.pdf'),
+                generate_figure(
+                    plot_func=plot_author_production_over_time,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig04_author_production_over_time',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['wide'],
                     dpi=fig_config['dpi']
                 )
@@ -209,67 +199,52 @@ def main():
                 map_path = str(cocitation_base) + '.map'
                 
                 if Path(network_path).exists() and Path(map_path).exists():
-                    plot_cocitation_network(
-                        str(network_path),
-                        str(map_path),
-                        str(output_figures / 'fig05_cocitation_network.png'),
-                        seed=seed,
-                        figsize=fig_config['sizes']['square'],
-                        dpi=fig_config['dpi']
-                    )
-                    plot_cocitation_network(
-                        str(network_path),
-                        str(map_path),
-                        str(output_figures / 'fig05_cocitation_network.pdf'),
+                    generate_figure(
+                        plot_func=plot_cocitation_network,
+                        data={'network': network_path, 'map': map_path},
+                        output_dir=output_figures,
+                        figure_name='fig05_cocitation_network',
+                        figure_config=fig_config,
+                        network_path=network_path,
+                        map_path=map_path,
                         seed=seed,
                         figsize=fig_config['sizes']['square'],
                         dpi=fig_config['dpi']
                     )
                 else:
-                    logger.warning(f"VOSviewer exports not found. Skipping fig05. Run VOSviewer first.")
+                    logger.warning("VOSviewer exports not found. Skipping fig05. Run VOSviewer first.")
             
             elif fig_name == 'fig06':
-                plot_wordclouds_panel(
-                    canonical_df,
-                    str(output_figures / 'fig06_wordclouds_panel.png'),
-                    figsize=fig_config['sizes']['wide'],
-                    dpi=fig_config['dpi'],
-                    max_words=fig_config['wordcloud']['max_words']
-                )
-                plot_wordclouds_panel(
-                    canonical_df,
-                    str(output_figures / 'fig06_wordclouds_panel.pdf'),
+                generate_figure(
+                    plot_func=plot_wordclouds_panel,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig06_wordclouds_panel',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['wide'],
                     dpi=fig_config['dpi'],
                     max_words=fig_config['wordcloud']['max_words']
                 )
             
             elif fig_name == 'fig07':
-                plot_mca_map(
-                    canonical_df,
-                    str(output_figures / 'fig07_mca_map.png'),
-                    seed=seed,
-                    figsize=fig_config['sizes']['standard'],
-                    dpi=fig_config['dpi']
-                )
-                plot_mca_map(
-                    canonical_df,
-                    str(output_figures / 'fig07_mca_map.pdf'),
+                generate_figure(
+                    plot_func=plot_mca_map,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig07_mca_map',
+                    figure_config=fig_config,
                     seed=seed,
                     figsize=fig_config['sizes']['standard'],
                     dpi=fig_config['dpi']
                 )
             
             elif fig_name == 'fig08':
-                plot_fit_trends(
-                    canonical_df,
-                    str(output_figures / 'fig08_fit_trends.png'),
-                    figsize=fig_config['sizes']['wide'],
-                    dpi=fig_config['dpi']
-                )
-                plot_fit_trends(
-                    canonical_df,
-                    str(output_figures / 'fig08_fit_trends.pdf'),
+                generate_figure(
+                    plot_func=plot_fit_trends,
+                    data=canonical_df,
+                    output_dir=output_figures,
+                    figure_name='fig08_fit_trends',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['wide'],
                     dpi=fig_config['dpi']
                 )
@@ -277,15 +252,12 @@ def main():
             elif fig_name == 'fig10':
                 # Requires co-occurrence table
                 cooccurrence_df = calculate_fit_cooccurrence(canonical_df)
-                plot_fit_cooccurrence_heatmap(
-                    cooccurrence_df,
-                    str(output_figures / 'fig10_fit_cooccurrence_heatmap.png'),
-                    figsize=fig_config['sizes']['square'],
-                    dpi=fig_config['dpi']
-                )
-                plot_fit_cooccurrence_heatmap(
-                    cooccurrence_df,
-                    str(output_figures / 'fig10_fit_cooccurrence_heatmap.pdf'),
+                generate_figure(
+                    plot_func=plot_fit_cooccurrence_heatmap,
+                    data=cooccurrence_df,
+                    output_dir=output_figures,
+                    figure_name='fig10_fit_cooccurrence_heatmap',
+                    figure_config=fig_config,
                     figsize=fig_config['sizes']['square'],
                     dpi=fig_config['dpi']
                 )
