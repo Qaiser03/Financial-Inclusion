@@ -57,6 +57,33 @@ FIGURE_REGISTRY = {
         'size': 'square',
         'requires_vosviewer': False,
     },
+    'fig13': {
+        'name': 'Topic Evolution Over Time',
+        'function': 'plot_topic_evolution',
+        'size': 'wide',
+        'requires_vosviewer': False,
+        'requires_topic_model': True,
+    },
+    'fig14': {
+        'name': 'Citation Surge Detection',
+        'function': 'plot_citation_surge',
+        'size': 'wide',
+        'requires_vosviewer': False,
+    },
+    'fig15': {
+        'name': 'Co-authorship Network',
+        'function': 'plot_coauthorship_network',
+        'size': 'large',
+        'requires_vosviewer': False,
+        'requires_networkx': True,
+    },
+    'fig16': {
+        'name': 'Keyword Co-occurrence Network',
+        'function': 'plot_keyword_cooccurrence_network',
+        'size': 'large',
+        'requires_vosviewer': False,
+        'requires_networkx': True,
+    },
 }
 
 

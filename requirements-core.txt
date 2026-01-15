@@ -1,0 +1,16 @@
+# Core dependencies - minimal requirements for the pipeline to run
+# Install with: pip install -r requirements-core.txt
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+openpyxl>=3.1.0
+
+# Configuration
+pyyaml>=6.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Testing
+pytest>=7.0.0

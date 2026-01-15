@@ -1,0 +1,81 @@
+topic_id,topic_name,term,weight
+0,Digital Financial Services,fintech,0.15685098467239025
+0,Digital Financial Services,blockchain,0.09469449480690263
+0,Digital Financial Services,technology,0.08754047630487366
+0,Digital Financial Services,data,0.08263519633656549
+0,Digital Financial Services,digital,0.07292598046796897
+0,Digital Financial Services,finance,0.05485334390371525
+0,Digital Financial Services,credit,0.047695469712679905
+0,Digital Financial Services,learning,0.04468273663384756
+0,Digital Financial Services,information,0.03715364646281835
+0,Digital Financial Services,technologies,0.03406676547837909
+1,Payment Systems,digital,0.2230889448162894
+1,Payment Systems,payment,0.12301738917969594
+1,Payment Systems,payments,0.06924669197753236
+1,Payment Systems,security,0.06265854620054313
+1,Payment Systems,remittances,0.04773029858861504
+1,Payment Systems,energy,0.04756914418992579
+1,Payment Systems,bank,0.046243393698608325
+1,Payment Systems,transactions,0.03748298755819543
+1,Payment Systems,remittance,0.037156835062566715
+1,Payment Systems,cash,0.0361231774555554
+2,Financial Literacy,literacy,0.13348863865440963
+2,Financial Literacy,education,0.10248912134888542
+2,Financial Literacy,health,0.09549771284301625
+2,Financial Literacy,capability,0.08018736288413504
+2,Financial Literacy,behavior,0.06573324551234509
+2,Financial Literacy,knowledge,0.06195660365692487
+2,Financial Literacy,savings,0.04184882440235597
+2,Financial Literacy,social,0.03884044417943547
+2,Financial Literacy,results,0.03828687787602248
+2,Financial Literacy,income,0.037292366947734155
+3,Microfinance & Credit,bank,0.13227003405680193
+3,Microfinance & Credit,banking,0.10930037504113854
+3,Microfinance & Credit,banks,0.09554564535995758
+3,Microfinance & Credit,credit,0.07746908568721508
+3,Microfinance & Credit,services,0.06254890035896542
+3,Microfinance & Credit,market,0.0469579499569165
+3,Microfinance & Credit,sector,0.04573283918857564
+3,Microfinance & Credit,central,0.045299186667223656
+3,Microfinance & Credit,paper,0.04063753203054691
+3,Microfinance & Credit,access,0.03790941097896016
+4,Microfinance & Credit,microfinance,0.10999647746172656
+4,Microfinance & Credit,development,0.08866980462527171
+4,Microfinance & Credit,women,0.07614451942985354
+4,Microfinance & Credit,sustainable,0.07550785619802876
+4,Microfinance & Credit,social,0.074598319644136
+4,Microfinance & Credit,research,0.07300596532898505
+4,Microfinance & Credit,economic,0.06787673385663072
+4,Microfinance & Credit,islamic,0.05494275491231518
+4,Microfinance & Credit,analysis,0.039237607105748994
+4,Microfinance & Credit,finance,0.0381484905032813
+5,Digital Financial Services,finance,0.13529951107103033
+5,Digital Financial Services,digital,0.12772852587687022
+5,Digital Financial Services,literacy,0.08326394711954808
+5,Digital Financial Services,rural,0.0719774787726242
+5,Digital Financial Services,access,0.051043864938956456
+5,Digital Financial Services,china,0.04970010974842206
+5,Digital Financial Services,inclusive,0.04165784974995397
+5,Digital Financial Services,performance,0.040703966147432574
+5,Digital Financial Services,small,0.03966454383700523
+5,Digital Financial Services,smes,0.037413165443290125
+6,Rural Development,economic,0.0832631181760972
+6,Rural Development,countries,0.08162779548741553
+6,Rural Development,income,0.08058172472942766
+6,Rural Development,development,0.06194635180557496
+6,Rural Development,access,0.05831080719778227
+6,Rural Development,growth,0.057588870224322145
+6,Rural Development,poverty,0.04988250610359336
+6,Rural Development,data,0.04877801785090616
+6,Rural Development,africa,0.04753442816833415
+6,Rural Development,index,0.04736905744945498
+7,Mobile Banking,mobile,0.21551995044617134
+7,Mobile Banking,money,0.10864039516144687
+7,Mobile Banking,banking,0.0997182632480412
+7,Mobile Banking,services,0.07785028421641074
+7,Mobile Banking,adoption,0.07242076855522304
+7,Mobile Banking,technology,0.05447910697212386
+7,Mobile Banking,use,0.04719813878425071
+7,Mobile Banking,factors,0.03104130120891734
+7,Mobile Banking,digital,0.030595162431197795
+7,Mobile Banking,service,0.028652424462775997

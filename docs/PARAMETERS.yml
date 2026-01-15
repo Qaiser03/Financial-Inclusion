@@ -112,3 +112,123 @@ vosviewer:
     min_citations: 1
     # Normalization method
     normalization: "association_strength"
+
+# ============================================================
+# ADVANCED BIBLIOMETRIC ANALYSIS (v2.0.0)
+# ============================================================
+
+# Topic Modeling (LDA) settings
+topic_modeling:
+  # Number of topics to extract
+  n_topics: 8
+  
+  # Random seed for LDA reproducibility
+  seed: 42
+  
+  # Number of iterations for model training
+  n_iterations: 500
+  
+  # Number of top terms to display per topic
+  top_n_terms: 10
+  
+  # Minimum document frequency for term inclusion
+  min_df: 5
+  
+  # Maximum document frequency ratio for term exclusion
+  max_df: 0.8
+  
+  # Backend preference: "gensim" or "sklearn"
+  # Falls back to sklearn if gensim unavailable
+  backend: "gensim"
+  
+  # Text field to analyze (must exist in canonical data)
+  text_field: "title"
+  
+  # Stop words language
+  stop_words: "english"
+
+# Citation Burst Detection settings
+citation_bursts:
+  # Z-score threshold for surge detection
+  z_threshold: 2.0
+  
+  # Detection method: "full_series" or "rolling"
+  method: "full_series"
+  
+  # Window size for rolling method (years)
+  rolling_window: 5
+  
+  # Minimum citations per year to consider
+  min_yearly_citations: 10
+  
+  # Years field in data
+  year_field: "year_clean"
+  
+  # Citations field in data
+  citation_field: "cited_by"
+
+# Network Analysis settings
+network_analysis:
+  # Co-authorship network
+  coauthorship:
+    # Minimum collaborations to include an edge
+    min_edge_weight: 1
+    
+    # Maximum number of authors to include (by degree centrality)
+    top_n_authors: 50
+    
+    # Author field delimiter (for splitting author strings)
+    author_delimiter: "; "
+  
+  # Keyword Co-occurrence network
+  keyword_cooccurrence:
+    # Minimum co-occurrences to include an edge
+    min_edge_weight: 2
+    
+    # Maximum number of keywords to include
+    top_n_keywords: 50
+    
+    # Keyword field in data
+    keyword_field: "keywords_combined"
+    
+    # Keyword delimiter
+    keyword_delimiter: "; "
+  
+  # Network visualization
+  visualization:
+    # Layout algorithm: "spring", "kamada_kawai", "circular"
+    layout: "spring"
+    
+    # Spring layout parameters
+    spring_k: null  # null for auto, or float
+    spring_iterations: 50
+    
+    # Node sizing method: "degree", "betweenness", "uniform"
+    node_size_method: "degree"
+    
+    # Node size range [min, max]
+    node_size_range: [100, 1000]
+    
+    # Edge width range [min, max]
+    edge_width_range: [0.5, 3.0]
+    
+    # Show top N labels only (to avoid clutter)
+    top_n_labels: 20
+    
+    # Random seed for layout
+    seed: 42
+
+# Metrics computation settings
+metrics:
+  # Fields for entity extraction
+  author_field: "authors"
+  country_field: "affiliations"  # Will be parsed for country info
+  institution_field: "affiliations"
+  source_field: "source_title"
+  
+  # Citation field
+  citation_field: "cited_by"
+  
+  # Top N entities to report
+  top_n: 20
+
